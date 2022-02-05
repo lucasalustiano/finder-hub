@@ -41,9 +41,16 @@ function GithubProvider({ children }) {
     });
   }
 
+  function clearUsers() {
+    dispatch({
+      type: 'CLEAR_USERS',
+    });
+  }
+
   return (
     <GithubContext.Provider
       value={{
+        clearUsers,
         searchUsers,
         users: state.users,
         loading: state.loading,
