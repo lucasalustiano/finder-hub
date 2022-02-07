@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+import User from './pages/User';
 import Home from './pages/Home';
 import About from './pages/About';
 import Footer from './pages/Footer';
@@ -20,6 +21,7 @@ function App() {
             <main className='container mx-auto px-3 pb-12'>
               <Alert />
               <Routes>
+                <Route exact path='/user/:login' element={<User />}></Route>
                 <Route exact path='/about' element={<About />}></Route>
                 <Route exact path='/notfound' element={<NotFound />}></Route>
                 <Route exact path='/' element={<Home />}></Route>
