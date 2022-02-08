@@ -3,12 +3,11 @@ import { Link, useParams } from 'react-router-dom';
 import { FaCodepen, FaStore, FaUserFriends, FaUsers } from 'react-icons/fa';
 
 import { GithubContext } from '../context/github/GithubContext';
+import { getUser, getUserRepos } from '../context/github/GithubActions';
 import RepositoriesList from '../components/repositories/RepositoriesList';
 
 function User() {
-  const { getUser, user, loading, getUserRepos, repositories } = useContext(
-    GithubContext
-  );
+  const { user, loading, repositories, dispatch } = useContext(GithubContext);
   const {
     name,
     type,
@@ -28,10 +27,18 @@ function User() {
   const params = useParams();
 
   useEffect(() => {
-    getUser(params.login);
-    getUserRepos(params.login);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    dispatch({ type: 'SET_LOADING' });
+
+    async function getUserData() {
+      const userData = await getUser(params.login);
+      dispatch({ type: 'GET_USER', payload: userData });
+
+      const userRepoData = await getUserRepos(params.login);
+      dispatch({ type: 'GET_REPOS', payload: userRepoData });
+    }
+
+    getUserData();
+  }, [dispatch, params.login]);
 
   if (loading) {
     return <h1>Loading</h1>;
